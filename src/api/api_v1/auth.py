@@ -12,6 +12,7 @@ router = APIRouter(prefix=settings.api.v1.auth, tags=["Auth"])
 router.include_router(
     router=fastapi_users.get_auth_router(
         auth_backend,
+        requires_verification=True,
     ),
 )
 
@@ -21,4 +22,15 @@ router.include_router(
         UserRead,
         UserCreate,
     )
+)
+
+# request verify token
+# verify
+router.include_router(
+    router=fastapi_users.get_verify_router(UserRead),
+)
+
+# reset password router
+router.include_router(
+    router=fastapi_users.get_reset_password_router(),
 )
