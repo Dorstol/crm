@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from fastapi.openapi.docs import (
     get_redoc_html,
@@ -49,6 +50,13 @@ def create_app(
         lifespan=lifespan,
         docs_url=None if create_custom_static_urls else "/docs",
         redoc_url=None if create_custom_static_urls else "/redoc",
+    )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
     if create_custom_static_urls:
         register_static_docs_routes(app)
